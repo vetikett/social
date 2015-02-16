@@ -34,8 +34,10 @@ class Route {
             if( is_readable("app/Controllers/". $controllerName .".php") ) {
 
                 $controller = new $controllerNamespace();
-                if ( method_exists($controller, $action) && $_SERVER['REQUEST_METHOD'] == "GET"
-                    && isset($_GET['id']))
+
+                if ( method_exists($controller, $action) &&
+                     $_SERVER['REQUEST_METHOD'] == "GET" &&
+                     isset($_GET['id']))
                 {
 
                     echo $controller->$action($_GET['id']);
@@ -52,6 +54,30 @@ class Route {
                     require_once '404.php';
                 }
             }
+        }
+
+        if ( (count($uri) == 2) ) {
+
+            $controllerName = ucfirst($uri[1]) . "Controller";
+            $controllerNamespace = "App\\Controllers\\" . $controllerName;
+            $action = "indexAction";
+
+            if (is_readable("app/Controllers/" . $controllerName . ".php")) {
+
+                $controller = new $controllerNamespace();
+
+                if ( method_exists($controller, $action) && $_SERVER['REQUEST_METHOD'] == "GET") {
+
+                    echo $controller->$action();
+
+                }
+            } else {
+                require_once '404.php';
+            }
+        }
+
+        if ( count($uri) > 4 ) {
+            require_once '404.php';
         }
     }
 
