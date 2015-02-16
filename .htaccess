@@ -1,0 +1,11 @@
+DirectoryIndex index.php
+
+Options -Indexes
+
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILNAME} !-f
+RewriteCond %{REQUEST_FILNAME} !-d
+
+RewriteRule ^ router.php [L]
+
