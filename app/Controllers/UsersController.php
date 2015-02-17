@@ -31,10 +31,9 @@ class UsersController {
         $stm->execute();
 
         $user = $stm->fetchObject();
+       
+        return View::render('users/show', compact('user'));
 
-
-
-        return View::render('users/show', $user);
     }
 
     public function editAction($id) {

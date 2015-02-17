@@ -5,6 +5,6 @@
     <title></title>
 </head>
 <body>
-    <h1>User with id: <?php echo $data->username; ?></h1>
+    <h1>User with id: <?php echo $user->username; ?></h1>
 </body>
 </html>
