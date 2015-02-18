@@ -12,15 +12,14 @@ class UsersController {
     // an action for example "example.com/posts" just name is "indexAction".
 
     public function indexAction() {
-        return "Get all entities";
-    }
+        $db = Db::get();
+        $stm = $db->prepare('SELECT * FROM users');
+        $stm->execute();
 
-    public function createAction() {
-        return View::render('users/create');
-    }
+        $users = $stm->fetchAll(PDO::FETCH_OBJ);
 
-    public function saveAction() {
-        return "Saves entity";
+        return View::render('users/index', compact('users'));
+
     }
 
     public function showAction($id) {
@@ -30,18 +29,24 @@ class UsersController {
         $stm->bindParam(':id', $id, PDO::PARAM_INT);
         $stm->execute();
 
-        $user = $stm->fetchObject();
-       
-        return View::render('users/show', compact('user'));
+        if ($user = $stm->fetchObject()) {
+            return View::render('users/show', compact('user'));
+        } else {
+
+            require_once '404.php';
+        }
+
+
 
     }
 
     public function editAction($id) {
-        return "Renders form to update entity with id: ". $id;
+        $user['id'] = $id;
+        return View::render('users/edit', compact('user'));
     }
 
     public function updateAction($id) {
-        return "Updates entity with id: ". $id;
+        var_dump("Updates entity with id: ". $id);
     }
 
     public function deleteAction($id) {

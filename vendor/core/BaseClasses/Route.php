@@ -17,8 +17,13 @@ class Route {
         // so you can do "website.com/users/show/1" where "1" will be
         // equal to "?id=1". ex "website.com/users/show?id=1".
         if ( count($uri) == 4 ) {
-            $_GET['id'] = $uri[3];
-            unset($uri[3]);
+            if ( $_SERVER['REQUEST_METHOD'] == "POST" ) {
+                $_POST['id'] = $uri[3];
+                unset($uri[3]);
+            }else{
+                $_GET['id'] = $uri[3];
+                unset($uri[3]);
+            }
         }
 
         // The actual dynamic routing:
@@ -44,11 +49,14 @@ class Route {
 
                 } elseif ( method_exists($controller, $action) && $_SERVER['REQUEST_METHOD'] == "GET") {
 
-                    echo $controller->$action();
+                        echo $controller->$action();
 
                 } elseif ( method_exists($controller, $action) && $_SERVER['REQUEST_METHOD'] == "POST") {
-
-                    $controller->$action($_POST['id']);
+                    if ( isset($_POST['id']) ) {
+                        $controller->$action($_POST['id']);
+                    }else{
+                        $controller->$action();
+                    }
 
                 } else {
                     require_once '404.php';
