@@ -18,19 +18,47 @@ class AuthController {
     }
 
     public function postLoginAction() {
-        // SQL
-        // if email and pass is OK?
-        // put that user row into session below.
-        // session_start()
-        $_SESSION['user'] = "user row goes here";
+        // get variables
+        $password = $_POST['password'];
+        $email = $_POST['email'];
 
-        // just a debug to see that the data comes in to the $_POST super global.
-        var_dump($_POST);
+        // check if fields are empty
+        // if not, get username and password from database
+        if((!empty($password)) && (!empty($email))) {
 
+            $db = Db::get();
+            $stm = $db->prepare('SELECT * FROM users WHERE email = :email AND password = :password');
+            $stm->bindParam(":email", $email, PDO::PARAM_STR);
+            $stm->bindParam(":password", $password, PDO::PARAM_STR);
+            $stm->execute();
+
+            // if there is a result, send to user profile
+            if ($stm->rowCount() == 1) {
+                $user = $stm->fetchObject();
+
+                $_SESSION['user'] = $user;
+
+                session_start();
+                // redirected to userpage
+                return View::render('users/show', compact('user'));
+            }
+            // if not, return error in $msg
+            else {
+                $msg =  "Wrong username or password";
+                return $msg;
+            }
+
+        }
+        // if not, return error in $msg
+        else {
+            $msg = "You forgot to insert password or email";
+            return $msg;
+        }
     }
 
+
     public function logout() {
-        // session_destroy();
+        //session_destroy();
 
     }
 
@@ -41,25 +69,37 @@ class AuthController {
     public function postRegisterAction() {
 
         if ( isset($_POST['register']) ) {
+
             $username =  $this->validateUsername($_POST['username']);
             $email = $this->validateEmail($_POST['email']);
-            $password = $this->validatePasswordMatch($_POST['password'], $_POST['re_password']);
+            $password = $this->validatePassword($_POST['password']); // , $_POST['re_password']);
 
-            if ( $username && $email && $password ) {
-                // If input is valid above?
-                // Do SQL to insert into db
+           if ( $username && $email && $password ) {
+                // connect to db and add new user
+                $db = Db::get();    // Db::get() is set short for the db connection
+                $stm = $db->prepare("INSERT INTO users (username, email, password) VALUES (:username, :email, :password) ");
+                $stm->bindParam(":username", $username, PDO::PARAM_STR);
+                $stm->bindParam(":email", $email, PDO::PARAM_STR);
+                $stm->bindParam(":password", $password, PDO::PARAM_STR);
 
-                // if db insert is a success? try to also login, below.
-                // $this->postLoginAction()
+               // if db insert is successful, send user to login
+                if($stm->execute()) {
+                    var_dump($_POST);
+
+
+                    // if db insert is a success send to login
+                    return View::render('auth/login');
+
+                }
 
                 // just a debug
-                var_dump($_POST);
-            } else {
+
+           } else {
                 // if validation fails above. Send the same view again but this time
                 // with $errors.
                 // Look at validateUsername method for example.
                 // Also check the auth/register view for example on how to
-                // loop out existing erros for the user to see. So the user
+                // loop out existing errors for the user to see. So the user
                 // know what went wrong.
                 
                 $errors = $this->errors;
@@ -85,16 +125,26 @@ class AuthController {
     }
 
     protected function validateEmail($email) {
-        return true;
+        $email = $this->filterInput($email);
+
+        return $email;
     }
 
     protected function validatePassword($password) {
-        return true;
+        $password = $this->filterInput($password);
+
+        if ( strlen($password) <= 5 ) {
+            $this->errors[] = 'Password must be at least 6 characters';
+            return false;
+        }
+
+        return $password;
     }
 
-    protected function validatePasswordMatch($password, $re_password) {
+   /* protected function validatePasswordMatch($password, $re_password) {
         return true;
-    }
+    } */
+
 
     // basic filter for input content.
     protected function filterInput($input) {

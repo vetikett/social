@@ -9,4 +9,16 @@ class HomeController {
         return View::render('home');
     }
 
+    public function getStatusFeed() {
+
+    }
+
+    public function sessionUser() {
+
+    }
+
+    public function getStatusForm() {
+
+    }
+
 }

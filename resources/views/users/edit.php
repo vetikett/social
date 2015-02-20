@@ -1,4 +1,7 @@
-<?php $_SESSION['user'] ? : header('location: ../../auth/login'); ?>
+<?php
+
+$_SESSION['user'] ? : header('location: ../../auth/login'); ?>
+
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -7,7 +10,7 @@
 </head>
 <body>
     <h1>user id: <?php echo $user['id'] ?></h1>
-    <form action="../update/<?php echo $user['id'] ?>" method="post">
+    <form action="./update/<?php echo $user['id'] ?>" method="post">
         <label style="display: block;" for="username">
             username
             <input name="username" type="username"/>

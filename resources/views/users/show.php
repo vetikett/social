@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-    <h1>User with id: <?php echo $user->username; ?></h1>
-</body>
-</html>
+
+
+    <h1>User with id: <?php echo $user->id;?></h1>
+
+    <form method="post" action="../users/edit">
+        <input type="hidden" name="id" value="<?php $user->id ?>" />
+        <input type="submit" value="Edit Profile" name="send_id"/>
+    </form>

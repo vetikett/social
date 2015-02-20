@@ -1,4 +1,6 @@
-<?php $_SESSION['user'] ? : header('location: ../auth/login'); ?>
+<?php
+// if no user, send to login
+$_SESSION['user'] ? : header('location: ../auth/login'); ?>
 <!DOCTYPE html>
 <html>
 <head lang="en">
