@@ -35,10 +35,9 @@ class AuthController {
             // if there is a result, send to user profile
             if ($stm->rowCount() == 1) {
                 $user = $stm->fetchObject();
-
+                session_start();
                 $_SESSION['user'] = $user;
 
-                session_start();
                 // redirected to userpage
                 return View::render('users/show', compact('user'));
             }
@@ -58,6 +57,7 @@ class AuthController {
 
 
     public function logout() {
+        unset($_SESSION['user']);
         //session_destroy();
 
     }

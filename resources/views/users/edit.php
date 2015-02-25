@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 $_SESSION['user'] ? : header('location: ../../auth/login'); ?>
 
 <!DOCTYPE html>
@@ -10,10 +10,10 @@ $_SESSION['user'] ? : header('location: ../../auth/login'); ?>
 </head>
 <body>
     <h1>user id: <?php echo $user['id'] ?></h1>
-    <form action="./update/<?php echo $user['id'] ?>" method="post">
+    <form action="../update/<?php echo $user['id'] ?>" method="post">
         <label style="display: block;" for="username">
             username
-            <input name="username" type="username"/>
+            <input name="username" type="username" value=""/>
         </label>
         <label style="display: block;" for="email">
             email
