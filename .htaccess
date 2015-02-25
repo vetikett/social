@@ -6,6 +6,6 @@ RewriteEngine On
 
 RewriteCond %{REQUEST_FILNAME} !-f
 RewriteCond %{REQUEST_FILNAME} !-d
+RewriteCond %{REQUEST_URI} !(\.css|\.js|\.png|\.jpg|\.ttf|\.otf|\.gif|robots\.txt)$ [NC]
 
 RewriteRule ^ router.php [L]
-

@@ -19,6 +19,15 @@ class UsersController {
         $users = $stm->fetchAll(PDO::FETCH_OBJ);
 
         return View::render('users/index', compact('users'));
+    }
+    public function getAllUsersAction($friendid) {
+        $db = Db::get();
+        $stm = $db->prepare("SELECT * FROM users where id = '$friendid'");
+        $stm->execute();
+
+        $users = $stm->fetchAll(PDO::FETCH_OBJ);
+
+        return $users;
 
     }
     /*
@@ -26,23 +35,16 @@ class UsersController {
      */
     public function showAction($id) {
         $db = Db::get();    // Db::get() is set short for the db connection
-        $stm = $db->prepare('SELECT * FROM users
-                           WHERE id = :id');
+        $stm = $db->prepare('SELECT * FROM users WHERE id = :id');
         $stm->bindParam(':id', $id, PDO::PARAM_INT);
 
         $stm->execute();
 
-
-
         if ($user = $stm->fetchObject()) {
             return View::render('users/show', compact('user'));
         } else {
-
             require_once '404.php';
         }
-
-
-
     }
 
     public function showAllAction() {

@@ -12,14 +12,14 @@ function unhover(element) {
 }
 
 function messh(element) {
-    element.setAttribute('src', '../../imgs/mess_icon.png');
+    element.setAttribute('src', '../imgs/mess_icon.png');
     element.style.cursor="pointer";
     element.style.boxShadow = "0px 0px 5px 0px rgba(50, 50, 50, 0.2)";
     element.style.webkitBoxShadow = "0px 0px 5px 0px rgba(50, 50, 50, 0.2)";
     element.style.mozBoxShadow = "0px 0px 5px 0px rgba(50, 50, 50, 0.2)";
 }
 function messoh(element) {
-    element.setAttribute('src', '../../imgs/mess_icon_nohover.png');
+    element.setAttribute('src', '../imgs/mess_icon_nohover.png');
     element.style.boxShadow = "none";
     element.style.webkitBoxShadow = "none";
     element.style.mozBoxShadow = "none";

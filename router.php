@@ -11,7 +11,3 @@ Route::defineRootPath();
 Route::dynamic();
 /* ----------------------------- */
 
-
-
-
-

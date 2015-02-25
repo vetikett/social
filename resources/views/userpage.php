@@ -21,9 +21,7 @@ require_once('header.php');
     </div>
     <div class="up_friendlist">
         <h2>ViktorMeidal's friends:</h2>
-        <?php $result = $stm->fetchAll();
-        foreach($result as $row) {
-        ?>
+
         <div class="singlefriend">
             <div class="friend_img">
                 <img class="friend_img" src="../../imgs/thomasringqvist.png">

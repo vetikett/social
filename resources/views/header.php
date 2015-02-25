@@ -1,3 +1,12 @@
+<?php
+session_start();
+if ($_SESSION['user']) {
+    $inlogged_user = $_SESSION['user'];
+}
+else {
+    header('location:../../auth/login');
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,9 +23,16 @@
         <a href="home.php"><li>Quone</li></a>
     </ul>
     <ul class="ulright">
-        <a href="messages.php"><li>Messages</li></a>
-        <a href="userpage.php"><li><div class="userimgheader"><img src="../../imgs/viktormeidal.png"></div>My account</li></a>
-        <a href="start.php"><li>Sign out/Sign in</li></a>
-        <!-- If signed in->Show 'Sign out', else show 'Sign in'. Both leads to start.php. -->
+        <a href="../../conversations/index/<?php echo $inlogged_user->id ?>"><li>Messages</li></a>
+        <a href="../../users/show/<?php echo $inlogged_user->id ?>"><li><div class="userimgheader"><img src="../../<?php echo $inlogged_user->user_img ?>"></div>My account</li></a>
+        <a href="../../Auth/logout"><li>
+            <?php
+                if (!empty($_SESSION['user'])) {
+                    echo "Sign out";
+                }
+                else {
+                    echo "Sign in";
+                }
+            ?></li></a>
     </ul>
 </header>
