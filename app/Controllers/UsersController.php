@@ -21,13 +21,18 @@ class UsersController {
         return View::render('users/index', compact('users'));
 
     }
-
+    /*
+     * Show user info
+     */
     public function showAction($id) {
         $db = Db::get();    // Db::get() is set short for the db connection
         $stm = $db->prepare('SELECT * FROM users
                            WHERE id = :id');
         $stm->bindParam(':id', $id, PDO::PARAM_INT);
+
         $stm->execute();
+
+
 
         if ($user = $stm->fetchObject()) {
             return View::render('users/show', compact('user'));
@@ -40,6 +45,26 @@ class UsersController {
 
     }
 
+    public function showAllAction() {
+        $html = "";
+
+        $db= Db::get(); // connect to database
+        $stm = $db->prepare('SELECT * FROM users');
+
+        if($stm->execute()) {
+            while($row = $stm->fetch()) {
+                $html .= "<h2><a href='../users/show/" . $row["id"] . "'>" . $row['username'] . "</a></h2>";
+            }
+
+            return View::render('users/show_all', compact('html'));
+        }
+
+
+
+    }
+    /*
+     * Edit user
+     */
     public function editAction($id) {
         $user['id'] = $id;
 
@@ -52,7 +77,8 @@ class UsersController {
         // get variables
         $username = $_POST['username'];
         $email = $_POST['email'];
-        $password = $_POST['username'];
+        $password1 = $_POST['password'];
+        $password2 = $_POST['re-password'];
         $user_status = $_POST['user_status'];
         $img = $_POST['user_img'];
 
@@ -63,21 +89,28 @@ class UsersController {
         $stm->bindParam(':id', $id, PDO::PARAM_INT);
         $stm->bindParam(':username', $username, PDO::PARAM_STR);
         $stm->bindParam(':email', $email, PDO::PARAM_STR);
-        $stm->bindParam(':password', $password, PDO::PARAM_STR);
+        $stm->bindParam(':password', $password1, PDO::PARAM_STR);
         $stm->bindParam(':user_status', $user_status, PDO::PARAM_STR);
         $stm->bindParam(':img', $img, PDO::PARAM_STR);
 
         // if able to update, send to userpage
-        if($stm->execute) {
+        if($stm->execute()) {
             echo "user updated" ;
         }
 
-        // if not, tell what went wrong
+        // if password doesnt match
+        elseif ($password1 != $password2) {
+            echo "password doesnt match";
+        }
+        // if something else went wrong
         else {
-            echo "something went wrong";
+            echo "weird problem just happened";
         }
     }
 
+    /*
+     * Delete user
+     */
     public function deleteUserAction($id) {
         $db = Db::get();
         $stm = $db->prepare('DELETE * FROM users WHERE id= :id');
@@ -89,8 +122,16 @@ class UsersController {
     public function saveAction() {
 
     }
-
+    /*
+     * Update status
+     */
     public function updateStatusAction() {
+
+        $text = $_POST['status_text'];
+        $db = Db::get();
+        $stm = $db->prepare('UPDATE status SET text= :text WHERE user_id = :d');
+        $stm->bindParam(':id', $id, PDO::PARAM_INT);
+        $stm->bindParam(':text', $text, PDO::PARAM_INT);
 
     }
 }

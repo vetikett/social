@@ -1,5 +1,6 @@
 <?php
 require_once('header.php');
+
 ?>
 <div class="u_content">
     <div class="up_info">
