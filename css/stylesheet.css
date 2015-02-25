@@ -3,11 +3,16 @@
     src: url('Lato-Regular.ttf')  format('truetype') /* Safari, Android, iOS */
 }
 
+@font-face {
+    font-family: 'AuthenticRatatouille';
+    src: url("Authentic-Ratatouille.otf") format("opentype");
+}
+
 body {
     margin: 0;
     padding: 0;
     color: #2a2a2a;
-    background: #fff;
+    background-color: rgb(235, 230, 217);
     font-size: 14px;
     font-family: 'Lato', sans-serif;
     overflow: -moz-scrollbars-vertical;
@@ -51,7 +56,7 @@ h1, h2, h3, h4, h5, h6 {
 /* WRAPPER */
 
 #wrapper {
-    width: 1200px;
+    width: 1000px;
     margin: 0 auto;
 }
 
@@ -72,20 +77,58 @@ header li:hover {
     cursor: pointer;
 }
 
-.ulleft {
+header .ulleft {
     float: left;
+    font-family: 'AuthenticRatatouille', sans-serif;
+    font-size: 48px;
+    padding: 0;
+    margin: 0 0 0 40px;
+}
+
+.ulleft a {
+    color: #fff;
+}
+
+.ulleft a:hover {
+    color: #ff5450;
+    font-weight: normal;
+}
+
+header .ulleft li {
+    display: inline;
+    padding: 1px 30px 1px 30px;
+    line-height: 50px;
+}
+
+footer .ulleft {
+    float: left;
+    padding: 0;
+    margin: 0 0 0 40px;
+    line-height: 50px;
 }
 
 .ulright {
     float: right;
 }
 
+.ulright a {
+    color: #fff;
+}
+
+.ulright a:hover {
+    color: #2a2a2a;
+    font-weight: normal;
+}
+
 /* CONTENT */
 
 .content {
     background: #f1eeee;
-    min-height: 500px;
+    min-height: 600px;
     display: block;
+    width: 100%;
+    clear: both;
+    text-align: center;
 }
 
 .u_content {
@@ -96,18 +139,67 @@ header li:hover {
     padding: 0 0 30px 0;
 }
 
+/* START PAGE */
+
+.op_logo {
+    font-family: 'AuthenticRatatouille', sans-serif;
+    font-size: 260px;
+    color: #ff5450;
+    padding-top: 30px;
+}
+
+.op_downer {
+    margin-top: -20px;
+    margin-bottom: 0;
+    font-style: italic;
+    color: #F1EEEE;
+}
+
+.opener_forms {
+    width: 300px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.open_input {
+    padding: 5px;
+    width: 300px;
+    margin: 10px 0 20px 0;
+}
+
+#loginbtn {
+    width: 312px;
+    padding: 5px;
+    height: 35px;
+}
+
 /* HOME VIEW  - STATUSES */
+
+.contheader {
+     padding-bottom: 20px;
+}
+
+.friendsheader {
+    padding-left: 10px;
+    padding-bottom: 20px;
+}
 
 .statuses {
     display: inline-block;
-    width: 75%;
+    width: 675px;
     vertical-align: top;
-    padding: 20px 0 20px 0;
+    padding: 20px 0 20px 20px;
+    text-align: left;
+    overflow-y: auto;
+    height: 600px;
 }
 
 .singlestatus {
-    padding: 10px 0 10px 50px;
+    padding: 10px 0 10px 10px;
     height: 60px;
+    background: #fff;
+    margin: 0 0 5px 0;
+    width: 600px;
 }
 
 .singlestatus img {
@@ -166,10 +258,13 @@ header li:hover {
 
 .friendslist {
     display: inline-block;
-    width: 24%;
+    width: 280px;
+    min-height: 600px;
     vertical-align: top;
-    padding: 20px 0 20px 0;
     text-align: left;
+    padding: 20px 0 20px 20px;
+    background: #fcffda;
+    overflow-y: auto;
 }
 
 .sfl {
@@ -177,6 +272,7 @@ header li:hover {
     height: 30px;
     vertical-align: middle;
     margin-bottom: 5px;
+    width: 250px;
 }
 
 .sfl_info {
@@ -233,21 +329,22 @@ header li:hover {
     padding: 0 20px 0 0;
     font-style: italic;
     display: inline-block;
-    width: 470px;
+    width: 700px;
 }
 
 .up_newstatus {
+    margin-top: 15px;
     background: #ff5450;
     color: #fff;
-    display: inline-block;
+    display: block;
     font-weight: bold;
-    font-size: 18px;
-    height: 40px;
+    font-size: 16px;
+    height: 30px;
     width: 200px;
     border-radius: 30px;
     -webkit-border-radius: 30px;
     -moz-border-radius: 30px;
-    line-height: 38px;
+    line-height: 30px;
     text-align: center;
     padding: 0;
     vertical-align: top;
@@ -301,23 +398,166 @@ header li:hover {
 }
 
 .singlefriend {
-    width: 200px;
+    width: 800px;
     padding: 15px 15px 15px 0;
     height: 50px;
-    display: inline-block;
+    display: block;
 }
 
-.singlefriend img {
+.friend_img {
     width: 50px;
     display: inline-block;
     padding: 0 10px 0 0;
 }
 
-.up_sf_name {
+.friend_name {
     display: inline-block;
-    height: 50px;
+    vertical-align: top;
+    width: 200px;
+}
+
+.up_sf_name {
+    display: block;
     width: 135px;
-    vertical-align: middle;
+    vertical-align: top;
+    padding-bottom: 18px;
+}
+
+.friend_status {
+    display: inline-block;
+    vertical-align: top;
+    padding-top: 15px;
+    width: 300px;
+}
+
+.friendsmessimg {
+    width: 20px;
+}
+
+.add_delete_friend {
+    display: inline-block;
+    vertical-align: top;
+}
+
+/* MESSAGES */
+
+.m_content {
+    background: #f1eeee;
+    min-height: 500px;
+    display: block;
+    width: 100%;
+    clear: both;
+    text-align: center;
+}
+
+.mess_friends {
+    display: inline-block;
+    width: 290px;
+    vertical-align: top;
+    padding: 20px 0 20px 30px;
+    text-align: left;
+}
+
+.searchfriendslist {
+    width: 160px;
+    padding: 5px;
+    height: 20px;
+    vertical-align: top;
+    margin-top: 20px;
+}
+
+.startconversation {
+    width: 70px;
+    height: 32px;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+    background: #ff5450;
+    border: 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.startconversation:active {
+    background: #e84c49;
+    border: 0;
+}
+
+.mess_container {
+    display: inline-block;
+    width: 675px;
+    vertical-align: top;
+    padding: 20px 0 20px 0;
+    text-align: left;
+}
+
+.m_c_content {
+    width: 600px;
+    height: 380px;
+    background: rgba(255,255,255,0.4);
+    margin-top: 20px;
+    padding: 10px 5px 10px 5px;
+    overflow-y: auto;
+}
+
+.sing_mess {
+    display: block;
+    width: 560px;
+    color: #2a2a2a;
+    font-size: 14px;
+    padding: 5px;
+}
+
+.sing_mess_img {
+    display: inline-block;
+    vertical-align: top;
+    width: 40px;
+}
+
+.sing_mess_txt {
+    display: inline-block;
+    vertical-align: top;
+    width: 500px;
+}
+
+.message_sent {
+    font-size: 12px;
+    font-style: italic;
+}
+
+.hr {
+    width: 80%;
+    height: 1px;
+    border-bottom: 1px solid #ff5450;
+    margin: 0 auto;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.mess_container textarea {
+    width: 600px;
+    margin-top: 10px;
+    padding: 5px;
+    height: 80px;
+    font-family: Lato, sans-serif;
+}
+
+.sendmess {
+    width: 612px;
+    height:50px;
+    background: #ff5450;
+    border: 0;
+    color: #fff;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+.sendmess:active {
+    background: #e84c49;
 }
 
 /* FOOTER */
@@ -329,4 +569,15 @@ footer {
     color: #fff;
     padding: 0;
     margin: 0;
+}
+
+
+/* FONT AWESOME */
+
+.fa-minus-square {
+    color: #ff312f;
+}
+
+.fa-plus-square {
+    color: #32c83a;
 }

@@ -8,7 +8,7 @@ function unhover(element) {
     element.style.boxShadow = "none";
     element.style.webkitBoxShadow = "none";
     element.style.mozBoxShadow = "none";
-    element.style.background = "#f1eeee";
+    element.style.background = "#fcffda";
 }
 
 function messh(element) {
