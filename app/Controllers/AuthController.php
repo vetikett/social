@@ -56,8 +56,10 @@ class AuthController {
     }
 
 
-    public function logout() {
+    public function logoutAction() {
         unset($_SESSION['user']);
+
+
         //session_destroy();
 
     }

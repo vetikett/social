@@ -10,9 +10,9 @@ $_SESSION['user'] ? : header('location: ../auth/login'); ?>
 <body>
     <h1>All users</h1>
     <ul>
-        <?php foreach($users as $user) {
-            echo "<li>$user->username</li>";
-        } ?>
+        <?php
+            echo $html;
+        ?>
     </ul>
 </body>
 </html>

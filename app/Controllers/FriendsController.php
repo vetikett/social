@@ -10,14 +10,21 @@ class FriendsController {
 
     public function showFriendsAction($id) {
 
+        $html = "";
+
         $db = Db::get();
         $stm = $db->prepare("SELECT * FROM friends WHERE (requester_id = :id OR respondent_id = :id) AND status = 'accepted'");
         $stm->bindParam(":id", $id, PDO::PARAM_INT);
-        $stm->execute();
 
-        $friends = $stm->fetchAll(PDO::FETCH_OBJ);
+        if($stm->execute()) {
+            while($row = $stm->fetch()) {
+                $html .= "<h2><a href='../users/show/" . $row["id"] . "'>" . $row['username'] . "</a></h2>";
+            }
 
-        return View::render('friends/index', compact('friends'));
+            return $html;
+        }
+
+
 
     }
 
@@ -52,12 +59,40 @@ class FriendsController {
         }
     }
 
-    function showFriendRequestAction() {
+    function showFriendRequestAction($id) {
+
+        $html = "";
+
         $db = Db::get();
+        $stm = $db->prepare("SELECT * FROM friends WHERE respondent_id = :id AND status = 'pending' ");
+        $stm->bindParam(":id", $id, PDO::PARAM_INT);
+
+        if($stm->execute()) {
+            while($row = $stm->fetch()) {
+                $html .= "<h2><a href='../users/show/" . $row["id"] . "'>" . $row['username'] . "</a></h2>";
+                $html .= "<form method='post' action='./addFriend'>
+                        <input type='submit' value='Accept Friendrequest' />
+                        <input type='submit' value='Decline Friendrequest' />
+                        </form> " ;
+            }
+
+            return View::render('friends/index', compact('html'));
+        }
+
     }
 
-    function respondToFriendRequestAction() {
+    function declineFriendRequestAction() {
+        $db = Db::get();
+        $stm = $db->prepare("UPDATE friends SET status= 'declined' WHERE respondent_id = :user_id AND requester_id = :friend_id ");
+        $stm->bindParam(":user_id", $user_id, PDO::PARAM_INT);
+        $stm->bindParam(":friend_id", $friend_id, PDO::PARAM_INT);
 
     }
 
+    function acceptFriendRequestAction() {
+        $db = Db::get();
+        $stm = $db->prepare("UPDATE friends SET status= 'accepted' WHERE respondent_id = :user_id AND requester_id = :friend_id ");
+        $stm->bindParam(":user_id", $user_id, PDO::PARAM_INT);
+        $stm->bindParam(":friend_id", $friend_id, PDO::PARAM_INT);
+    }
 }

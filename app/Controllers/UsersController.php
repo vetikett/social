@@ -12,13 +12,18 @@ class UsersController {
     // an action for example "example.com/posts" just name is "indexAction".
 
     public function indexAction() {
+        $html = "";
         $db = Db::get();
         $stm = $db->prepare('SELECT * FROM users');
         $stm->execute();
 
-        $users = $stm->fetchAll(PDO::FETCH_OBJ);
+        if($stm->execute()) {
+            while($row = $stm->fetch()) {
+                $html .= "<h2><a href='../users/show/" . $row["id"] . "'>" . $row['username'] . "</a></h2>";
+            }
 
-        return View::render('users/index', compact('users'));
+            return View::render('users/index', compact('html'));
+        }
 
     }
     /*
@@ -45,23 +50,7 @@ class UsersController {
 
     }
 
-    public function showAllAction() {
-        $html = "";
 
-        $db= Db::get(); // connect to database
-        $stm = $db->prepare('SELECT * FROM users');
-
-        if($stm->execute()) {
-            while($row = $stm->fetch()) {
-                $html .= "<h2><a href='../users/show/" . $row["id"] . "'>" . $row['username'] . "</a></h2>";
-            }
-
-            return View::render('users/show_all', compact('html'));
-        }
-
-
-
-    }
     /*
      * Edit user
      */
@@ -129,7 +118,7 @@ class UsersController {
 
         $text = $_POST['status_text'];
         $db = Db::get();
-        $stm = $db->prepare('UPDATE status SET text= :text WHERE user_id = :d');
+        $stm = $db->prepare('UPDATE status SET text= :text WHERE user_id = :id');
         $stm->bindParam(':id', $id, PDO::PARAM_INT);
         $stm->bindParam(':text', $text, PDO::PARAM_INT);
 

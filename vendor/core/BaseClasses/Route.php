@@ -41,15 +41,15 @@ class Route {
                 $controller = new $controllerNamespace();
 
                 if ( method_exists($controller, $action) &&
-                     $_SERVER['REQUEST_METHOD'] == "GET" &&
-                     isset($_GET['id']))
+                    $_SERVER['REQUEST_METHOD'] == "GET" &&
+                    isset($_GET['id']))
                 {
 
                     echo $controller->$action($_GET['id']);
 
                 } elseif ( method_exists($controller, $action) && $_SERVER['REQUEST_METHOD'] == "GET") {
 
-                        echo $controller->$action();
+                    echo $controller->$action();
 
                 } elseif ( method_exists($controller, $action) && $_SERVER['REQUEST_METHOD'] == "POST") {
                     if ( isset($_POST['id']) ) {
@@ -91,20 +91,23 @@ class Route {
 
     // Defines the root directory.
     static public function defineRootPath() {
-        $relativeUrl = explode("/", getcwd());
+        $relativeUrl = explode(DIRECTORY_SEPARATOR, getcwd());
         $root_path = array_pop($relativeUrl);
         define('ROOT_PATH', $root_path);
     }
 
+
     // Parses the URI so that the first URI directory is the root directory for this project.
     static private function getRelativeUri($rawUri) {
         $uri = explode("/", parse_url(trim(strtolower($rawUri), "/"), PHP_URL_PATH));
+
         foreach ($uri as $key => $uriPiece) {
 
             if ($uriPiece == ROOT_PATH) {
                 break;
             }else {
                 unset($uri[$key]);
+
             }
         }
         $uri = array_values($uri);
