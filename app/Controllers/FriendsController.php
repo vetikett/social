@@ -1,4 +1,5 @@
 <?php namespace App\Controllers;
+require_once 'UserController.php';
 
 use App\Db;
 use PDO;
@@ -8,31 +9,75 @@ use Core\BaseClasses\View;
 
 class FriendsController {
 
-    public function showFriendsAction($id) {
-
+    /*public function showFriendsAction($id) {
         $html = "";
-
         $db = Db::get();
         $stm = $db->prepare("SELECT * FROM friends WHERE (requester_id = :id OR respondent_id = :id) AND status = 'accepted'");
         $stm->bindParam(":id", $id, PDO::PARAM_INT);
-
         if($stm->execute()) {
             while($row = $stm->fetch()) {
-                $html .= "<h2><a href='../users/show/" . $row["id"] . "'>" . $row['username'] . "</a></h2>";
+                $html .= "<div class='singlefriend'><div class='friend_img'><img class='friend_img' src='" . $row['user_img'] . "'></div><div class='friend_name'>
+    <span class='up_sf_name'><a href='../users/show/" . $row['id'] . "'>" . $row['username'] . "></a></span>
+    <img class='friendsmessimg' src='../../imgs/mess_icon_nohover.png' onmouseover='messh(this);' onmouseout='messoh(this);' alt='Skicka meddelande!' title='Skicka meddelande!'></div><div class='add_delete_friend'><i class='fa fa-plus-square fa-2x'></i></div></div>";
             }
-
             return $html;
         }
 
+    } */
 
+    public function getFriends($user_id) {
+        $db = Db::get();
 
+        $stm = $db->prepare("SELECT * FROM friends WHERE (requester_id = :id OR respondent_id = :id) AND status = 'pending'");
+        $stm->bindParam(':id', $user_id, PDO::PARAM_INT);
+
+        if ($stm->execute()) {
+            foreach ( $stm as $friend ) {
+                if ($user_id != $friend['requester_id']) {
+                    $friend_ids[] = $friend['requester_id'];
+                }
+                elseif ($user_id != $friend['respondent_id']) {
+                    $friend_ids[] = $friend['respondent_id'];
+                }
+                else {
+                    echo "you ain't got no friends, buuuuuhuuuu";
+                }
+            }
+        }
+        else {
+            echo "whatt";
+        }
+        return $friend_ids;
+    }
+
+    public function showFriends($friends_array) {
+        $yada = new UserController();
+        foreach ( $friends_array as $friend_id ) {
+            $userpals[] = $yada->getAllUsersAction($friend_id); // Hämtar från usercontrollern
+        }
+        foreach ( $userpals as $user ) {
+            ?>
+            <div class="singlefriend">
+                <div class="friend_img">
+                    <a href="http://localhost/social/user/show/<?php echo $user[0]->id;?>"><img class="friend_img" src="http://localhost/social/<?php echo $user[0]->user_img;?>"></a>
+                </div>
+                <div class="friend_name">
+                    <span class="up_sf_name"><a href="http://localhost/social/user/show/<?php echo $user[0]->id;?>"><?php echo $user[0]->username;?></a></span>
+                    <img class="friendsmessimg" src="http://localhost/social/imgs/mess_icon_nohover.png" onmouseover="messh(this);" onmouseout="messoh(this);" alt="Skicka meddelande!" title="Skicka meddelande!">
+                </div>
+                <div class="add_delete_friend"><i class="fa fa-plus-square fa-2x"></i></div>
+            </div>
+        <?php
+        }
     }
 
     function addFriendAction() {
         $user_id = $_POST['user_id'];
         $friend_id = $_POST['friend_id'];
         $db = Db::get();
-        $stm = $db->prepare("INSERT INTO friends (requester_id, respondent_id, status) VALUES ($user_id, $friend_id, 'pending') ");
+        $stm = $db->prepare("INSERT INTO friends (requester_id, respondent_id, status) VALUES (:userid, :friendid, 'pending') ");
+        $stm->bindParam(':userid', $user_id, PDO::PARAM_INT);
+        $stm->bindParam(':friendid', $friend_id, PDO::PARAM_INT);
 
         if($stm->execute()) {
             echo "friend added" ;
@@ -50,7 +95,9 @@ class FriendsController {
         $friend_id = $_POST['friend_id'];
 
         $db = Db::get();
-        $stm = $db->prepare("DELETE FROM friends WHERE requester_id = '$user_id' AND respondent_id = '$friend_id' ");
+        $stm = $db->prepare("DELETE FROM friends WHERE requester_id = :userid AND respondent_id = :friendid ");
+        $stm->bindParam(':userid', $user_id, PDO::PARAM_INT);
+        $stm->bindParam(':friendid', $friend_id, PDO::PARAM_INT);
 
         if($stm->execute()) {
             echo "friend deleted" ;
@@ -59,26 +106,22 @@ class FriendsController {
         }
     }
 
+    function respondToFriendRequestAction() {
+
+    }
+
     function showFriendRequestAction($id) {
-
         $html = "";
-
         $db = Db::get();
         $stm = $db->prepare("SELECT * FROM friends WHERE respondent_id = :id AND status = 'pending' ");
         $stm->bindParam(":id", $id, PDO::PARAM_INT);
-
         if($stm->execute()) {
             while($row = $stm->fetch()) {
-                $html .= "<h2><a href='../users/show/" . $row["id"] . "'>" . $row['username'] . "</a></h2>";
-                $html .= "<form method='post' action='./addFriend'>
-                        <input type='submit' value='Accept Friendrequest' />
-                        <input type='submit' value='Decline Friendrequest' />
-                        </form> " ;
+                $html .= "<h2><a href='../user/show/" . $row["id"] . "'>" . $row['username'] . "</a></h2>";
+                $html .= "<form method='post' action='./addFriend'> <input type='submit' value='Accept Friendrequest' /> <input type='submit' value='Decline Friendrequest' /> </form> " ;
             }
-
             return View::render('friends/index', compact('html'));
         }
-
     }
 
     function declineFriendRequestAction() {
@@ -86,7 +129,6 @@ class FriendsController {
         $stm = $db->prepare("UPDATE friends SET status= 'declined' WHERE respondent_id = :user_id AND requester_id = :friend_id ");
         $stm->bindParam(":user_id", $user_id, PDO::PARAM_INT);
         $stm->bindParam(":friend_id", $friend_id, PDO::PARAM_INT);
-
     }
 
     function acceptFriendRequestAction() {
@@ -95,4 +137,5 @@ class FriendsController {
         $stm->bindParam(":user_id", $user_id, PDO::PARAM_INT);
         $stm->bindParam(":friend_id", $friend_id, PDO::PARAM_INT);
     }
+
 }

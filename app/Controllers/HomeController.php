@@ -6,7 +6,7 @@ use Core\BaseClasses\View;
 class HomeController {
 
     public function home() {
-        return View::render('home');
+        return View::render('start');
     }
     /*
      * Get all friends status from db
@@ -15,7 +15,7 @@ class HomeController {
      */
     public function getStatusFeed() {
 
-        return View::render('users/show', compact('status'));
+        return View::render('user/show', compact('status'));
     }
 
     public function sessionUser() {

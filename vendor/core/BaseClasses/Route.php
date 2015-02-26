@@ -107,7 +107,6 @@ class Route {
                 break;
             }else {
                 unset($uri[$key]);
-
             }
         }
         $uri = array_values($uri);

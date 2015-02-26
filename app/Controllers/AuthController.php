@@ -39,7 +39,8 @@ class AuthController {
                 $_SESSION['user'] = $user;
 
                 // redirected to userpage
-                return View::render('users/show', compact('user'));
+                //return View::render('users/index', compact('user'));
+                header("location:../status/");
             }
             // if not, return error in $msg
             else {
@@ -57,11 +58,10 @@ class AuthController {
 
 
     public function logoutAction() {
-        unset($_SESSION['user']);
-
-
+        session_start();
+        session_unset();
         //session_destroy();
-
+        return View::render('auth/login');
     }
 
     public function registerAction() {
