@@ -40,7 +40,7 @@ class AuthController {
 
                 // redirected to userpage
                 //return View::render('users/index', compact('user'));
-                header("location:../users/show/$user->id");
+                header("location:../status/");
             }
             // if not, return error in $msg
             else {
@@ -58,10 +58,10 @@ class AuthController {
 
 
     public function logoutAction() {
-
+        session_start();
         session_unset();
-        session_destroy();
-        var_dump($_SESSION['user']);
+        //session_destroy();
+        return View::render('auth/login');
     }
 
     public function registerAction() {

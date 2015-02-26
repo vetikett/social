@@ -159,18 +159,48 @@ footer .ulleft {
     width: 300px;
     margin: 0 auto;
     text-align: left;
+    padding-bottom: 60px;
 }
 
 .open_input {
-    padding: 5px;
+    padding: 10px;
     width: 300px;
     margin: 10px 0 20px 0;
 }
 
 #loginbtn {
-    width: 312px;
+    width: 322px;
     padding: 5px;
     height: 35px;
+}
+
+.lr_divider {
+    position: relative;
+    text-align: center;
+    width:280px;
+}
+
+.lr_divider span {
+    background: #F1EEEE;
+    padding: 0 15px;
+    position: relative;
+    z-index: 1;
+}
+
+.lr_divider:before {
+    background: #ddd;
+    content: "";
+    display: block;
+    height: 1px;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+}
+
+.padder {
+    padding:50px 20px;
+    text-align: center;
 }
 
 /* HOME VIEW  - STATUSES */
@@ -498,7 +528,7 @@ footer .ulleft {
     height: 380px;
     background: rgba(255,255,255,0.4);
     margin-top: 20px;
-    padding: 10px 5px 10px 5px;
+    padding: 10px 5px 10px 10px;
     overflow-y: auto;
 }
 

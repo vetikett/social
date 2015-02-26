@@ -9,75 +9,49 @@ $query = new \App\Controllers\ConversationsController();
         <input type="text" placeholder="Search..." class="searchfriendslist"><input type="submit" class="startconversation" value="Write">
         <?php
         $convid = $query->getMessageList($_SESSION['user']->id);
-
         ?>
-        <!--<div class="sfl" onmouseover="hover(this);" onmouseout="unhover(this);">
-            <img class="userimg" src="../../imgs/viktormeidal.png">
-            <div class="sfl_info">
-                <span class="sf_user">ViktorMeidal</span>
-            </div>
-        </div>
-        <div class="sfl" onmouseover="hover(this);" onmouseout="unhover(this);">
-            <img class="userimg" src="../../imgs/viktormeidal.png">
-            <div class="sfl_info">
-                <span class="sf_user">JanneJosefsson</span>
-            </div>
-        </div>
-        <div class="sfl" onmouseover="hover(this);" onmouseout="unhover(this);">
-            <img class="userimg" src="../../imgs/viktormeidal.png">
-            <div class="sfl_info">
-                <span class="sf_user">IdiAmin</span>
-            </div>
-        </div>
-        <div class="sfl" onmouseover="hover(this);" onmouseout="unhover(this);">
-            <img class="userimg" src="../../imgs/viktormeidal.png">
-            <div class="sfl_info">
-                <span class="sf_user">KalleKula</span>
-            </div>
-        </div>-->
     </div>
     <div class="mess_container">
-        <h1>Messages with IdiAmin</h1>
+        <?php
+        if (!empty($stm)) {
+        $recipient = $stm->fetchAll(PDO::FETCH_OBJ); ?>
+            <h1>Messages with <?php echo $recipient[0]->username; ?></h1>
         <div class="m_c_content">
+        <?php
+        $counter = 0;
+            foreach ($recipient as $message) {
+            ?>
             <div class="sing_mess">
                 <div class="sing_mess_img">
-                    <img class="userimg" src="../../imgs/viktormeidal.png">
+                    <a href="http://localhost/social/user/show/<?php echo $recipient[$counter]->sender_id; ?>"><img class="userimg" src="http://localhost/social/<?php echo $recipient[$counter]->user_img; ?>" alt="<?php echo $recipient[$counter]->sender_id; ?>" title="<?php echo $recipient[$counter]->sender_id; ?>"></a>
                 </div>
                 <div class="sing_mess_txt">
-                    <span>SAdasdasda asdf s fdsgfdg df gdf gdfg dfg dfg dfg dfgdasd asd  adasdas as dassdasdasdasd assdas d dfg fgfd gdfg dfgfg df  gdfgdf gfagdfgret erte terdg ert er erfaewte4t er ere </span><span class="message_sent"> - 14:40 15/6</span>
+                    <span><?php echo $recipient[$counter]->message_text; ?></span><span class="message_sent">&nbsp;&nbsp;&nbsp;&nbsp;/ <?php echo date('H:i - d/m-Y', strtotime ($recipient[$counter]->created_at)); ?></span>
                 </div>
                 <div class="hr"></div>
             </div>
-            <div class="sing_mess">
-                <div class="sing_mess_img">
-                    <img class="userimg" src="../../imgs/viktormeidal.png">
-                </div>
-                <div class="sing_mess_txt">
-                    <span>SAdasdasda asdf s fdsgfdg df gdf gdfg dfg dfg dfg dfgdasd asd  adasdas as dassdasdasdasd assdas d dfg fgfd gdfg dfgfg df  gdfgdf gfagdfgret erte terdg ert er erfaewte4t er ere </span><span class="message_sent"> - 14:40 15/6</span>
-                </div>
-                <div class="hr"></div>
-            </div>
-            <div class="sing_mess">
-                <div class="sing_mess_img">
-                    <img class="userimg" src="../../imgs/viktormeidal.png">
-                </div>
-                <div class="sing_mess_txt">
-                    <span>SAdasdasda asdf s fdsgfdg df gdf gdfg dfg dfg dfg dfgdasd asd  adasdas as dassdasdasdasd assdas d dfg fgfd gdfg dfgfg df  gdfgdf gfagdfgret erte terdg ert er erfaewte4t er ere </span><span class="message_sent"> - 14:40 15/6</span>
-                </div>
-                <div class="hr"></div>
-            </div>
-            <div class="sing_mess">
-                <div class="sing_mess_img">
-                    <img class="userimg" src="../../imgs/viktormeidal.png">
-                </div>
-                <div class="sing_mess_txt">
-                    <span>SAdasdasda asdf s fdsgfdg df gdf gdfg dfg dfg dfg dfgdasd asd  adasdas as dassdasdasdasd assdas d dfg fgfd gdfg dfgfg df  gdfgdf gfagdfgret erte terdg ert er erfaewte4t er ere </span><span class="message_sent"> - 14:40 15/6</span>
-                </div>
-                <div class="hr"></div>
-            </div>
+            <?php
+                $counter++;
+            }
+        }
+        else {
+            ?>
+            <h1>Messages</h1>
+            <div class="m_c_content">
+            <?php
+        }
+            ?>
         </div>
-        <textarea></textarea>
-        <input type="submit" class="sendmess" value="Send message">
+            <?php
+            if (!empty($stm)) {
+                ?>
+                <form action="../sendMessage/<?php echo $recipient[0]->conversation_id; ?>" method="post">
+                    <textarea name="message"></textarea>
+                    <input type="submit" class="sendmess" name="sendmessage" value="Send message">
+                </form>
+            <?php
+            }
+            ?>
     </div>
 </div>
 <?php
